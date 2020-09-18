@@ -1,4 +1,3 @@
 # EE2021Capstone
 
-Init of the 2021 ECE Capstone
-
+this is a backup incase someone overrides the master branch 
