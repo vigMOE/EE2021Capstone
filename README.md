@@ -1,3 +1,7 @@
+init of the sound board branch, for use to transmit game state to robot at the begining of the match.
+
+current idea is to utilize a start signal, 6 On/off intermediate signals, and an end signal
+
 
 to switch branches
 
@@ -41,7 +45,5 @@ command sequence to push after editing
 	git commit -m "Commit Message"
 
 	git push origin Branch_Name
-# EE2021Capstone
 
-Init of the 2021 ECE Capstone
 
