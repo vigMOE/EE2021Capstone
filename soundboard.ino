@@ -33,10 +33,11 @@ void loop() {
   for(byte i = 0; i <= 7; i++)    //Separate binary degits and place in array
   {
      float k = (float) i;
-     double bubble = pow(2,k);
-     int expon = (int)bubble;
+     double bubble = pow(2,k) + .2;
+     long expon = (long)bubble;
+     
      pulse[i] = ((opcode & ((expon))) >> i);
-     Serial.println(pulse[i]);
+     //Serial.println(pulse[i]);
   }
 
   for(byte j = 0; j <= 7; j++)    //Transmit signal
@@ -61,7 +62,7 @@ byte getOpcode()    //Get user input from buttons
   int ghost1;
   int ghost2;
   int wipe;
-  int total;
+  long total;
   byte opcode;
   do{   //Ensure second and third button presses are not identical
     int pos1=0;
@@ -85,7 +86,7 @@ byte getOpcode()    //Get user input from buttons
       Serial.println(pos2);
     }while ((pos1 || pos2) == 0);
 
-    int pellet = pos2;    //Convert to 1 hot
+    pellet = pos2;    //Convert to 1 hot
   
     blinky();
     do{   //Second button press
@@ -113,13 +114,10 @@ byte getOpcode()    //Get user input from buttons
       posb4 = digitalRead(4);
       posb5 = digitalRead(3);
       Serial.println("third loop");
-      Serial.println(posb1);
     } while ((posb1 || posb2 || posb3 || posb4 || posb5) == 0);
 
     ghost2 = posb2 + (2*posb3) + (3*posb4) + (4*posb5);   //Convert to 1 hot
-
     blinky();
-
     wipe = 0;
 
     if (ghost1 == ghost2)   //Wipe if invalid input
@@ -137,6 +135,8 @@ byte getOpcode()    //Get user input from buttons
 
   total = ghost2 + (ghost1 * 10) + (pellet * 100);    //Bit swizzel
   Serial.println(total);
+  Serial.println(pellet);
+  delay(10000);
 
   switch (total) {    //1 hot to binary
    case 1: opcode = 0; break;
@@ -210,3 +210,4 @@ void highNote(byte j)   //Play high note
   Serial.println(j);
   delay(1000);
 }
+
