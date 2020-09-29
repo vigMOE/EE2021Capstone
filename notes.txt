@@ -2,3 +2,14 @@ To init a pi, add ssh and wpa configuration.
 
 ssh allows for basic ssh functionality
 wpa configuration needs to have the ssid and password of a WPA or WPA2 compliant network (mobile hotspot) 
+
+
+setup arduino CLI for rpi:
+sudo curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+cd bin
+sudo mv arduino-cli /bin/
+
+
+arduinoCLI help
+arduino-cli
+https://arduino.github.io/arduino-cli/latest/getting-started/	
