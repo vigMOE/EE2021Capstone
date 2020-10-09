@@ -46,6 +46,8 @@ void setup()
 
   motor.enableTorque();  
   motor.wheelMode();
+
+ Serial.begin(9600);
 }
 
 void loop() 
@@ -53,55 +55,27 @@ void loop()
   broadcast_device.write(DYN_ADDRESS_LED, led_state);
   led_state=!led_state;
   delay(1000);
+  // Need to swap this from strings to tlv (maybe)
+        if (Serial.available()) {
+                String command = Serial.readString();
+                if (command == "drive") {
+                        //Return data to the RPI
+                        //work this into a TLV instead of string/bytestring
+                	//
+		}
+        }
 }
 
-void linear(int motorSpeed)
-{
-  motor16.speed(motorSpeed);
-  motor12.speed(motorSpeed); 
-}
-/*
-void reverse()
-{
-  motor16.speed(-speedMotor);
-  motor12.speed(-speedMotor);  
-}*/
+//speeds must be values between 0-1023
+void drive(int linear_speed, int horizontal_speed, int angular_speed){
+  linear_speed = (linear_speed + angular_speed > 1023)? 1023: linear_speed + angular_speed;
+  horizontal_speed = (horizontal_speed + angular_speed > 1023)? 1023: horizontal_speed + angular_speed;
 
-void horizontal(int motorSpeed)
-{
-  motor14.speed(motorSpeed);
-  motor13.speed(motorSpeed);
-}
-/*
-void rightStrafe()
-{
-  motor16.speed(speedMotor);
-  motor12.speed(speedMotor); 
-}
-*/
-void rotate(int motorSpeed)
-{
-  motor16.speed(motorSpeed);
-  motor12.speed(motorSpeed); 
-  motor13.speed(motorSpeed);
-  motor14.speed(motorSpeed); 
-}
-/*
-void motorsTEST()
-{
-  forward();
-  delay(1000);
+  motor16.speed(linear_speed);
+  motor12.speed(linear_speed); 
 
-  reverse();
-  delay(1000);
-
-  leftStrafe();
-  delay(1000);
-
-  rightStrafe();
-  delay(1000);
-
-  coolSpin();
-  delay(1000);
+  motor14.speed(horizontal_speed);
+  motor13.speed(horizontal_speed);
 }
-*/
+
+
