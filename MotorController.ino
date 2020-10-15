@@ -91,13 +91,19 @@ void drive(int linear_speed, int horizontal_speed, int angular_speed){
 }
 
 /*
-		  FR	
++Z is clockwise
+-Z is counter-clockwise
+			+X
+
+			  FR	
+			 -__+ 
+	 FL +|  	 
+-Y		-|   	 		+Y
+				|+ RR
+				|-
 		 -__+ 
- FL +|  	 
-	-|   	 
-			|+ RR
-			|-
-	 -__+ 
-      RL
+		  RL
+		  
+		  -X
 */
 
