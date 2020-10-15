@@ -41,41 +41,63 @@ uint8_t led_state = true;
 
 void setup() 
 {
-  interface.begin(baudrate);
-  delay(100);
+	interface.begin(baudrate);
+	delay(100);
 
-  motor.enableTorque();  
-  motor.wheelMode();
+	motor.enableTorque();  
+	motor.wheelMode();
 
- Serial.begin(9600);
+	Serial.begin(9600);
 }
 
 void loop() 
 {
-  broadcast_device.write(DYN_ADDRESS_LED, led_state);
-  led_state=!led_state;
-  delay(1000);
-  // Need to swap this from strings to tlv (maybe)
+	broadcast_device.write(DYN_ADDRESS_LED, led_state);
+	led_state=!led_state;
+	delay(1000);
+	// Need to swap this from strings to tlv (maybe)
         if (Serial.available()) {
-                String command = Serial.readString();
-                if (command == "drive") {
-                        //Return data to the RPI
-                        //work this into a TLV instead of string/bytestring
-                	//
-		}
+            String command = Serial.readString();
+            if (command == "drive") {
+                //Return data to the RPI
+                //work this into a TLV instead of string/bytestring
+             	//
+			}
         }
 }
 
-//speeds must be values between 0-1023
+//speeds must be values between (-1023)-(1023)
+//fl=x+z
+//fr=y+z
+//rr=x-z
+//rl=y-z
+//x=linear_speed
+//y=horizontal_speed
+//x=angular_speed
 void drive(int linear_speed, int horizontal_speed, int angular_speed){
-  linear_speed = (linear_speed + angular_speed > 1023)? 1023: linear_speed + angular_speed;
-  horizontal_speed = (horizontal_speed + angular_speed > 1023)? 1023: horizontal_speed + angular_speed;
+	
+	//motor speed calculations with bound checking, see above
+	int FL = (linear_speed + angular_speed > 1023)? 1023: ((linear_speed + angular_speed < -1023)? -1023: linear_speed + angular_speed);
+	int FR = (horizontal_speed + angular_speed > 1023)? 1023: ((horizontal_speed + angular_speed < -1023)? -1023: horizontal_speed + angular_speed);
 
-  motor16.speed(linear_speed);
-  motor12.speed(linear_speed); 
+	int RR = (linear_speed - angular_speed > 1023)? 1023: ((linear_speed - angular_speed < -1023)? -1023: linear_speed - angular_speed);
+	int RL = (horizontal - angular_speed > 1023)? 1023: ((horizontal - angular_speed < -1023)? -1023: horizontal_speed - angular_speed);
 
-  motor14.speed(horizontal_speed);
-  motor13.speed(horizontal_speed);
+	//needs to be checked against hardware (cant really determine which var goes to which motor until we get the board)
+	motor16.speed(FL);
+	motor14.speed(FR);
+	motor12.speed(RR); 
+	motor13.speed(RL);
 }
 
+/*
+		  FR	
+		 -__+ 
+ FL +|  	 
+	-|   	 
+			|+ RR
+			|-
+	 -__+ 
+      RL
+*/
 
