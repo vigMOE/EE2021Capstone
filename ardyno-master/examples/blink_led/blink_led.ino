@@ -14,10 +14,10 @@
 #define SOFT_TX_PIN 4
 
 // Use this for hardware serial without tristate buffer
-HardwareDynamixelInterface interface(Serial);
+//HardwareDynamixelInterface interface(Serial);
 
 // Use this for hardware serial with tristate buffer
-//HardwareDynamixelInterface interface(Serial, DIR_PIN);
+HardwareDynamixelInterface interface(Serial, DIR_PIN);
 
 // Use this for software serial without tristate buffer
 //SoftwareDynamixelInterface interface(SOFT_RX_PIN, SOFT_TX_PIN);
@@ -40,6 +40,6 @@ void setup() {
 void loop() {
   broadcast_device.write(DYN_ADDRESS_LED, led_state);
   led_state=!led_state;
-  delay(1000);
+  delay(3000);
 }
 

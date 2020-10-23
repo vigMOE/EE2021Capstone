@@ -10,14 +10,14 @@
 #define DIR_PIN 2
 
 // software serial pins, if you use software serial
-#define SOFT_RX_PIN 3
-#define SOFT_TX_PIN 4
+//#define SOFT_RX_PIN 3
+//#define SOFT_TX_PIN 4
 
 // Use this for hardware serial without tristate buffer
 //HardwareDynamixelInterface interface(Serial);
 
 // Use this for hardware serial with tristate buffer
-HardwareDynamixelInterface interface(Serial, DIR_PIN);
+HardwareDynamixelInterface interface(Serial3, DIR_PIN);
 
 // Use this for software serial without tristate buffer
 //SoftwareDynamixelInterface interface(SOFT_RX_PIN, SOFT_TX_PIN);
@@ -32,12 +32,12 @@ DynamixelDevice broadcast_device(interface, BROADCAST_ID);
 DynamixelMotor motor(interface, BROADCAST_ID);
 
 DynamixelMotor motor16(interface, 16);  //Master 
-DynamixelMotor motor14(interface, 14);  //Slave
-DynamixelMotor motor12(interface, 12);  //Slave Parallel to Master
-DynamixelMotor motor13(interface, 13);  //Slave Parallel to Slave
+DynamixelMotor motor14(interface, 13);  //Slave
+DynamixelMotor motor12(interface, 11);  //Slave Parallel to Master
+DynamixelMotor motor13(interface, 5);  //Slave Parallel to Slave
 
 uint8_t led_state = true;
-//int16_t speedMotor = 1023;
+int16_t maxSpeed = 485;
 
 void setup() 
 {
@@ -55,15 +55,15 @@ void loop()
 	broadcast_device.write(DYN_ADDRESS_LED, led_state);
 	led_state=!led_state;
 	delay(1000);
-	// Need to swap this from strings to tlv (maybe)
+	/*// Need to swap this from strings to tlv (maybe)
         if (Serial.available()) {
-            String command = Serial.readString();
+           String command = Serial.readString();
             if (command == "drive") {
                 //Return data to the RPI
                 //work this into a TLV instead of string/bytestring
              	//
 			}
-        }
+        }*/
 }
 
 //speeds must be values between (-1023)-(1023)
@@ -77,11 +77,11 @@ void loop()
 void drive(int linear_speed, int horizontal_speed, int angular_speed){
 	
 	//motor speed calculations with bound checking, see above
-	int FL = (linear_speed + angular_speed > 1023)? 1023: ((linear_speed + angular_speed < -1023)? -1023: linear_speed + angular_speed);
-	int FR = (horizontal_speed + angular_speed > 1023)? 1023: ((horizontal_speed + angular_speed < -1023)? -1023: horizontal_speed + angular_speed);
+	int FL = (linear_speed + angular_speed > maxSpeed)? maxSpeed: ((linear_speed + angular_speed < -maxSpeed)? -maxSpeed: linear_speed + angular_speed);
+	int FR = (horizontal_speed + angular_speed > maxSpeed)? maxSpeed: ((horizontal_speed + angular_speed < -maxSpeed)? -maxSpeed: horizontal_speed + angular_speed);
 
-	int RR = (linear_speed - angular_speed > 1023)? 1023: ((linear_speed - angular_speed < -1023)? -1023: linear_speed - angular_speed);
-	int RL = (horizontal - angular_speed > 1023)? 1023: ((horizontal - angular_speed < -1023)? -1023: horizontal_speed - angular_speed);
+	int RR = (linear_speed - angular_speed > maxSpeed)? maxSpeed: ((linear_speed - angular_speed < -maxSpeed)? -maxSpeed: linear_speed - angular_speed);
+	int RL = (horizontal - angular_speed > maxSpeed)? maxSpeed: ((horizontal - angular_speed < -maxSpeed)? -maxSpeed: horizontal_speed - angular_speed);
 
 	//needs to be checked against hardware (cant really determine which var goes to which motor until we get the board)
 	motor16.speed(FL);

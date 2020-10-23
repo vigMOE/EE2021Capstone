@@ -28,7 +28,7 @@ import time
 ser=serial.Serial("/dev/ttyACM0",9600)  #change ACM number as found from ls /dev/tty/ACM*
 '''
 #needs lidars, gyro, and motor controller
-def drive(target_distance, direction)
+def drive(target_distance, direction):
     #PID loop to account for distance error and theta error
     distance_init=lidar.getDistance()
     gyro_init=gyro.getAngle()
@@ -87,7 +87,7 @@ def drive(target_distance, direction)
     
 
 #needs motor control and gyro
-def rotate(target_angle)
+def rotate(target_angle):
     itteration_time = #arbitrary value
     #angular variable init
     angular_error_prior = 0
