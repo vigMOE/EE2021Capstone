@@ -1,11 +1,11 @@
 void setup() {
   Serial.begin(115200);
   pinMode(2,INPUT);
-  int opcode = getOpcode();
 
 }
 
 void loop() {
+  int opcode = getOpcode();
   Serial.print(opcode);
 }
 
