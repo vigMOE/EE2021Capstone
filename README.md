@@ -1,47 +1,8 @@
+initialization of the RPI/Arduino interface currently acting over serial (usbA-usbB)
 
-to switch branches
+TODO:
+	establish 2 way comms
+	migrate from strings to TLV communicaiton 
 
-	git checkout Branch_Name
-
-
-to add all files from your local machine to local git
-
-	git add -A
-
-
-to commit changes from local to "ready to push"
-
-	git commit
-
-
-set push upstream (So git knows where to push your directory)
-
-	git push --set-upstream origin Branch_Name
-
-
-push changes 
-
-	git push origin Branch_Name
-
-
-push changes to master
-
-	git push origin Local_Branch_Name:master
-
-
-pull changes from Branch_Name to the branch you are currently checked out on
-
-	git pull Branch_Name
-
-
-command sequence to push after editing
-
-	git add -A
-
-	git commit -m "Commit Message"
-
-	git push origin Branch_Name
-# EE2021Capstone
-
-Init of the 2021 ECE Capstone
-
+2020-09-29:
+	one way comms established from RPI to Arduino using strings
