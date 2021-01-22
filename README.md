@@ -6,3 +6,9 @@ TODO:
 
 2020-09-29:
 	one way comms established from RPI to Arduino using strings
+	
+	
+SOFTWARE LAYOUT:
+
+Arduino firmware:
+	1. z
