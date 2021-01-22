@@ -1,12 +1,22 @@
+#include <SoftwareSerial.h>  
+SoftwareSerial payLoad(16,10);
+
 void setup() {
   Serial.begin(115200);
+  payLoad.begin(57600);
   pinMode(2,INPUT);
-
+  //Serial.println("Beginning OP Code retrieve...");
+  //int opcode = getOpcode();
+  //Serial.print(opcode);
 }
 
 void loop() {
-  int opcode = getOpcode();
-  Serial.print(opcode);
+
+  while(payLoad.available()>0)
+  {
+  char inByte = payLoad.read();
+  Serial.write(inByte);
+  }
 }
 
 
@@ -21,6 +31,7 @@ int getOpcode()
   //delay(1000);
   do
   {
+    Serial.println("In first do while loop");
     audioSignal = 0;
       for (i = 0; i < 9; i++)
     {
@@ -32,6 +43,7 @@ int getOpcode()
 
   do
   {
+    Serial.println("In second do while loop");
     audioSignal = 0;
       for (i = 0; i < 9; i++)
     {
